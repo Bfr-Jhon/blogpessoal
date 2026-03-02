@@ -1,0 +1,24 @@
+import { Transform, TransformFnParams } from "class-transformer";
+import { IsNotEmpty } from "class-validator";
+import { Column, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+
+@Entity({name: "tb_postagens"}) // create table tb_postagem
+export class Postagem{
+    
+    @PrimaryGeneratedColumn() // Primary key (id) Auto Increment
+    id: number;
+
+    @Transform(({value}: TransformFnParams)=> value?.trim()) // remover espacos em branco - inicio e fim
+    @IsNotEmpty() // força a digitar o titulo
+    @Column({length: 100, nullable: false}) //Varchar(100) NOT NULL
+    titulo: string;
+
+    @Transform(({value}: TransformFnParams)=> value?.trim()) // remover espacos em branco - inicio e fim
+    @IsNotEmpty() // força a digitar o titulo
+    @Column({length: 1000, nullable: false}) //Varchar(1000) NOT NULL
+    texto: string;
+
+    @UpdateDateColumn() // atualiza a data na criação e na atualização
+    data: Date;
+
+}

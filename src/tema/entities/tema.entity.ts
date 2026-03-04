@@ -1,6 +1,7 @@
 import { Transform, TransformFnParams } from "class-transformer";
 import { IsNotEmpty, Length } from "class-validator";
-import { Column, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Postagem } from "../../postagem/entities/postagem.entity";
 
 @Entity({name: "tb_temas"}) // create table tb_temas
 export class Tema{
@@ -16,6 +17,7 @@ export class Tema{
     @Column({length: 255, nullable: false}) //Varchar(255) NOT NULL
     descricao: string;
 
-
+    @OneToMany( () => Postagem, (postagem) => postagem.tema)
+    postagem: Postagem[];
 
 }

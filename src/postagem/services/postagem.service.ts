@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { DeleteResult, ILike, Repository } from "typeorm";
 import { Postagem } from "../entities/postagem.entity";
+import { Tema } from "../../tema/entities/tema.entity";
 
 @Injectable()
 export class PostagemService {
@@ -13,15 +14,19 @@ export class PostagemService {
 
     async findAll(): Promise<Postagem[]> {
         // SELECT * FROM tb_postagens
-        return this.postagemRepository.find();
+        return this.postagemRepository.find({
+            relations:{
+                 tema: true}});
     }
 
     async findById(id: number): Promise<Postagem> {
         // SELECT * FROM tb_postagens WHERE id = ?;
         const postagem = await this.postagemRepository.findOne({
             where: {
-                id
-            }
+                id,
+            },
+            relations:{
+                tema: true}
         });
         if (!postagem) {
             throw new HttpException("Postagem não encontrada!", HttpStatus.NOT_FOUND)
@@ -33,8 +38,11 @@ export class PostagemService {
         // SELECT * FROM tb_postagens WHERE titulo LIKE '%?%'
         return this.postagemRepository.find({
             where: {
-                titulo: ILike(`%${titulo}%`)
-            }
+                titulo: ILike(`%${titulo}%`),
+            },
+            relations:{
+                tema: true}
+        
         })
     }
 

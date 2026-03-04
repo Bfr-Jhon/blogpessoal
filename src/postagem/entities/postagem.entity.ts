@@ -1,5 +1,5 @@
 import { Transform, TransformFnParams } from "class-transformer";
-import { IsNotEmpty } from "class-validator";
+import { IsNotEmpty, Length } from "class-validator";
 import { Column, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity({name: "tb_postagens"}) // create table tb_postagem
@@ -10,11 +10,13 @@ export class Postagem{
 
     @Transform(({value}: TransformFnParams)=> value?.trim()) // remover espacos em branco - inicio e fim
     @IsNotEmpty() // força a digitar o titulo
+    @Length(5, 100, {message: "O Titulo deve ter entre 5 e 100 caracteres"})
     @Column({length: 100, nullable: false}) //Varchar(100) NOT NULL
     titulo: string;
 
     @Transform(({value}: TransformFnParams)=> value?.trim()) // remover espacos em branco - inicio e fim
     @IsNotEmpty() // força a digitar o titulo
+    @Length(10, 1000, {message:"O Texto deve ter entre 10 e 1000 caracteres"})
     @Column({length: 1000, nullable: false}) //Varchar(1000) NOT NULL
     texto: string;
 

@@ -18,7 +18,7 @@ export class PostagemService {
         // SELECT * FROM tb_postagens
         return this.postagemRepository.find({
             relations:{
-                 tema: true}});
+                 tema: true, usuario:true}});
     }
 
     async findById(id: number): Promise<Postagem> {
@@ -28,7 +28,7 @@ export class PostagemService {
                 id,
             },
             relations:{
-                tema: true}
+                tema: true, usuario:true}
         });
         if (!postagem) {
             throw new HttpException("Postagem não encontrada!", HttpStatus.NOT_FOUND)
@@ -43,7 +43,8 @@ export class PostagemService {
                 titulo: ILike(`%${titulo}%`),
             },
             relations:{
-                tema: true}
+                tema: true,
+                usuario:true}
         
         })
     }
